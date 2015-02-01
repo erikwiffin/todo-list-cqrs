@@ -1,6 +1,6 @@
 <?php
 
-namespace TodoList\Domain\TodoList;
+namespace TodoList\Domain\WriteModel\TodoList;
 
 use Broadway;
 

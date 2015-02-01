@@ -1,6 +1,6 @@
 <?php
 
-namespace TodoList\Infrastructure;
+namespace TodoList\Domain\ReadModel\TodoList;
 
 use Broadway\ReadModel\ReadModelInterface;
 

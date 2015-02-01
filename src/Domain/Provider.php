@@ -11,22 +11,10 @@ class Provider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
-        $container['EventStore'] = function ($container) {
-            return new InMemoryEventStore();
-        };
+        $container['EventBus']
+            ->subscribe(EventHandler\TodoListProjector::fromContainer($container));
 
-        $container['EventBus'] = function ($container) {
-            return new SimpleEventBus();
-        };
-
-        $container['EventBus']->subscribe($container['TodoListProjector']);
-
-        $repository = new TodoList\TodoListRepository(
-            $container['EventStore'],
-            $container['EventBus']
-        );
-        $commandHandler = new TodoListCommandHandler($repository);
-
-        $container['CommandBus']->subscribe($commandHandler);
+        $container['CommandBus']
+            ->subscribe(WriteModel\TodoListCommandHandler::fromContainer($container));
     }
 }

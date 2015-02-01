@@ -17,7 +17,7 @@ class TodoListService
     {
         return new self(
             $container['CommandBus'],
-            $container['ReadModelRepository']
+            $container['ReadModel\TodoList\TodoListRepository']
         );
     }
 
@@ -32,7 +32,7 @@ class TodoListService
     public function startPlanning()
     {
         $id = Uuid::uuid4();
-        $command = new Domain\TodoList\StartCommand($id);
+        $command = new Domain\WriteModel\TodoList\StartCommand($id);
 
         $this->commandBus->dispatch($command);
 

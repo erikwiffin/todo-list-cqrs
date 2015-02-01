@@ -1,16 +1,23 @@
 <?php
 
-namespace TodoList\Infrastructure;
+namespace TodoList\Domain\EventHandler;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\ReadModel\Projector;
 use Broadway\ReadModel\RepositoryInterface;
+use Pimple\Container;
+use TodoList\Domain\ReadModel\TodoList;
 
 class TodoListProjector extends Projector
 {
     private $repository;
 
-    public function __construct(
+    public static function fromContainer(Container $container)
+    {
+        return new self($container['ReadModel\TodoList\TodoListRepository']);
+    }
+
+    private function __construct(
         RepositoryInterface $repository
     ) {
         $this->repository = $repository;
@@ -18,7 +25,7 @@ class TodoListProjector extends Projector
 
     public function applyStartedEvent($event, DomainMessage $domainMessage)
     {
-        $todoList = new TodoList($event->todoListId);
+        $todoList = new TodoList\TodoList($event->todoListId);
         $this->repository->save($todoList);
     }
 }

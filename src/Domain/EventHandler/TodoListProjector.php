@@ -28,4 +28,10 @@ class TodoListProjector extends Projector
         $todoList = new TodoList\TodoList($event->todoListId);
         $this->repository->save($todoList);
     }
+
+    public function applyTaskWasAddedEvent($event, DomainMessage $domainMessage)
+    {
+        $todoList = $this->repository->find($event->todoListId);
+        $todoList->addTask($event->task);
+    }
 }

@@ -7,6 +7,10 @@ use Broadway\EventDispatcher;
 use Broadway\EventHandling;
 use Broadway\EventStore;
 use Broadway\ReadModel;
+use Broadway\Serializer;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
+use Doctrine\ORM\Tools\Setup;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use TodoList\Domain\WriteModel;
@@ -18,8 +22,39 @@ class Provider implements ServiceProviderInterface
         $eventDispatcher  = new EventDispatcher\EventDispatcher();
         $simpleCommandBus = new CommandHandling\SimpleCommandBus();
 
+        $container['EntityManager'] = function ($container) {
+            $config = Setup::createConfiguration(
+                $container['config']['doctrine']['isDevMode'],
+                $container['config']['doctrine']['proxyDir']
+            );
+            $driver = new SimplifiedYamlDriver(
+                $container['config']['doctrine']['namespaces']
+            );
+            $config->setMetadataDriverImpl($driver);
+
+            return EntityManager::create(
+                $container['config']['db'],
+                $config
+            );
+        };
+
         $container['EventStore'] = function ($container) {
-            return new EventStore\InMemoryEventStore();
+            $schemaManager = $container['EntityManager']
+                ->getConnection()->getSchemaManager();
+            $schema = $schemaManager->createSchema();
+            $eventStore = new EventStore\DBALEventStore(
+                $container['EntityManager']->getConnection(),
+                new Serializer\SimpleInterfaceSerializer(),
+                new Serializer\SimpleInterfaceSerializer(),
+                'events'
+            );
+
+            $table = $eventStore->configureSchema($schema);
+            if ($table) {
+                $schemaManager->createTable($table);
+            }
+
+            return $eventStore;
         };
 
         $container['EventBus'] = function ($container) {
@@ -41,7 +76,7 @@ class Provider implements ServiceProviderInterface
         };
 
         $container['ReadModel\TodoList\TodoListRepository'] = function ($c) {
-            return new Persistence\InMemory\TodoListRepository();
+            return Persistence\Doctrine\TodoListRepository::fromContainer($c);
         };
     }
 }

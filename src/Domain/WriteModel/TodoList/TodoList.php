@@ -2,20 +2,31 @@
 
 namespace TodoList\Domain\WriteModel\TodoList;
 
-use Broadway;
+use Broadway\EventSourcing;
 
-class TodoList extends Broadway\EventSourcing\EventSourcedAggregateRoot
+class TodoList extends EventSourcing\EventSourcedAggregateRoot
 {
     private $todoListId;
+    private $tasks = [];
 
     public static function start($todoListId)
     {
-        $todoList = new TodoList();
+        $todoList = new self();
 
         // After instantiation of the object we apply the "StartedEvent".
         $todoList->apply(new StartedEvent($todoListId));
 
         return $todoList;
+    }
+
+    public static function instantiateForReconstitution()
+    {
+        return new self();
+    }
+
+    public function addTask($task)
+    {
+        $this->apply(new TaskWasAddedEvent($this->todoListId, $task));
     }
 
     private function __construct()
@@ -30,5 +41,10 @@ class TodoList extends Broadway\EventSourcing\EventSourcedAggregateRoot
     protected function applyStartedEvent(StartedEvent $event)
     {
         $this->todoListId = $event->todoListId;
+    }
+
+    protected function applyTaskWasAddedEvent(TaskWasAddedEvent $event)
+    {
+        $this->tasks[] = new Task($event->task);
     }
 }

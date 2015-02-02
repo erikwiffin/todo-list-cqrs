@@ -31,11 +31,25 @@ class TodoListService
 
     public function startPlanning()
     {
-        $id = Uuid::uuid4();
+        $id = Uuid::uuid4()->toString();
         $command = new Domain\WriteModel\TodoList\StartCommand($id);
 
         $this->commandBus->dispatch($command);
+        $this->repository->flush();
 
+        return $id;
+    }
+
+    public function displayTodoList($id)
+    {
         return $this->repository->find($id);
+    }
+
+    public function addTask($id, $task)
+    {
+        $command = new Domain\WriteModel\TodoList\AddTaskCommand($id, $task);
+
+        $this->commandBus->dispatch($command);
+        $this->repository->flush();
     }
 }

@@ -2,8 +2,6 @@
 
 namespace TodoList\Domain;
 
-use Broadway\EventStore\InMemoryEventStore;
-use Broadway\EventHandling\SimpleEventBus;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 

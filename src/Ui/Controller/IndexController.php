@@ -29,8 +29,30 @@ class IndexController
 
     public function index()
     {
-        $list = $this->service->startPlanning();
+        $this->app->render('index.twig');
+    }
 
-        $this->app->render('index.twig', compact('list'));
+    public function startPlanning()
+    {
+        $id = $this->service->startPlanning();
+
+        $this->app->redirect('/list/'.$id);
+    }
+
+    public function view($id)
+    {
+        $list = $this->service->displayTodoList($id);
+
+        $this->app->render('view.twig', compact('list'));
+    }
+
+    public function addTask()
+    {
+        $id = $this->app->request->post('id');
+        $task = $this->app->request->post('task');
+
+        $this->service->addTask($id, $task);
+
+        $this->app->redirect('/list/'.$id);
     }
 }

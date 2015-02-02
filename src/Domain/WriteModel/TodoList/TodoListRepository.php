@@ -16,7 +16,7 @@ class TodoListRepository extends EventSourcing\EventSourcingRepository
             $eventStore,
             $eventBus,
             'TodoList\Domain\WriteModel\TodoList\TodoList',
-            new EventSourcing\AggregateFactory\PublicConstructorAggregateFactory()
+            new EventSourcing\AggregateFactory\NamedConstructorAggregateFactory()
         );
     }
 }

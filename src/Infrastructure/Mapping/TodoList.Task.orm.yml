@@ -1,0 +1,13 @@
+TodoList\Domain\ReadModel\TodoList\Task:
+  type: entity
+  table: todolist_task
+
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+
+  fields:
+    description:
+      type: text

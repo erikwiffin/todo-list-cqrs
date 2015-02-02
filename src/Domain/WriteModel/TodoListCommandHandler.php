@@ -26,4 +26,12 @@ class TodoListCommandHandler extends CommandHandling\CommandHandler
 
         $this->repository->add($todoList);
     }
+
+    protected function handleAddTaskCommand(TodoList\AddTaskCommand $command)
+    {
+        $todoList = $this->repository->load($command->todoListId);
+        $todoList->addTask($command->task);
+
+        $this->repository->add($todoList);
+    }
 }

@@ -1,0 +1,29 @@
+TodoList\Domain\ReadModel\TodoList\TodoList:
+  type: entity
+  table: todolist
+
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+
+  fields:
+    uuid:
+      type: string
+      length: 36
+
+  manyToMany:
+    tasks:
+      targetEntity: Task
+      orphanRemoval: true
+      cascade: ["persist", "remove"]
+      joinTable:
+        name: todolist_task_map
+        joinColumns:
+          todolist_id:
+            referencedColumnName: id
+        inverseJoinColumns:
+          task_id:
+            referencedColumnName: id
+            unique: true

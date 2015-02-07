@@ -34,7 +34,9 @@ class IndexController
 
     public function startPlanning()
     {
-        $id = $this->service->startPlanning();
+        $title = $this->app->request->post('title');
+
+        $id = $this->service->startPlanning($title);
 
         $this->app->redirect('/list/'.$id);
     }
@@ -52,6 +54,26 @@ class IndexController
         $task = $this->app->request->post('task');
 
         $this->service->addTask($id, $task);
+
+        $this->app->redirect('/list/'.$id);
+    }
+
+    public function completeTask()
+    {
+        $id = $this->app->request->post('id');
+        $task = $this->app->request->post('task');
+
+        $this->service->completeTask($id, $task);
+
+        $this->app->redirect('/list/'.$id);
+    }
+
+    public function removeTask()
+    {
+        $id = $this->app->request->post('id');
+        $task = $this->app->request->post('task');
+
+        $this->service->removeTask($id, $task);
 
         $this->app->redirect('/list/'.$id);
     }

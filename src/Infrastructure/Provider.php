@@ -32,10 +32,17 @@ class Provider implements ServiceProviderInterface
             );
             $config->setMetadataDriverImpl($driver);
 
-            return EntityManager::create(
+            $em = EntityManager::create(
                 $container['config']['db'],
                 $config
             );
+
+            // Register ENUMs
+            $em->getConnection()
+                ->getDatabasePlatform()
+                ->registerDoctrineTypeMapping('enum', 'string');
+
+            return $em;
         };
 
         $container['EventStore'] = function ($container) {

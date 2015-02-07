@@ -4,28 +4,28 @@ namespace TodoList\Domain\WriteModel\TodoList;
 
 use Broadway\Serializer;
 
-class StartedEvent
+class TaskWasCompletedEvent
     extends TodoListEvent
     implements Serializer\SerializableInterface
 {
-    public $title;
+    public $task;
 
-    public function __construct($id, $title)
+    public function __construct($id, $task)
     {
         parent::__construct($id);
-        $this->title = $title;
+        $this->task = $task;
     }
 
     public static function deserialize(array $data)
     {
-        return new self($data['todoListId'], $data['title']);
+        return new self($data['todoListId'], $data['task']);
     }
 
     public function serialize()
     {
         return [
             'todoListId' => $this->todoListId,
-            'title' => $this->title,
+            'task' => $this->task,
         ];
     }
 }

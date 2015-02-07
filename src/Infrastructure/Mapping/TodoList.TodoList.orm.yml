@@ -12,6 +12,9 @@ TodoList\Domain\ReadModel\TodoList\TodoList:
     uuid:
       type: string
       length: 36
+    title:
+      type: string
+      length: 255
 
   manyToMany:
     tasks:

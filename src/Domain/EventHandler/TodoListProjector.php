@@ -25,13 +25,29 @@ class TodoListProjector extends Projector
 
     public function applyStartedEvent($event, DomainMessage $domainMessage)
     {
-        $todoList = new TodoList\TodoList($event->todoListId);
+        $todoList = TodoList\TodoList::fromStartedEvent($event);
         $this->repository->save($todoList);
+        $this->repository->flush();
     }
 
     public function applyTaskWasAddedEvent($event, DomainMessage $domainMessage)
     {
         $todoList = $this->repository->find($event->todoListId);
         $todoList->addTask($event->task);
+        $this->repository->flush();
+    }
+
+    public function applyTaskWasCompletedEvent($event, DomainMessage $domainMessage)
+    {
+        $todoList = $this->repository->find($event->todoListId);
+        $todoList->completeTask($event->task);
+        $this->repository->flush();
+    }
+
+    public function applyTaskWasRemovedEvent($event, DomainMessage $domainMessage)
+    {
+        $todoList = $this->repository->find($event->todoListId);
+        $todoList->removeTask($event->task);
+        $this->repository->flush();
     }
 }

@@ -29,13 +29,12 @@ class TodoListService
         $this->repository = $repository;
     }
 
-    public function startPlanning()
+    public function startPlanning($title)
     {
         $id = Uuid::uuid4()->toString();
-        $command = new Domain\WriteModel\TodoList\StartCommand($id);
+        $command = new Domain\WriteModel\TodoList\StartCommand($id, $title);
 
         $this->commandBus->dispatch($command);
-        $this->repository->flush();
 
         return $id;
     }
@@ -50,6 +49,19 @@ class TodoListService
         $command = new Domain\WriteModel\TodoList\AddTaskCommand($id, $task);
 
         $this->commandBus->dispatch($command);
-        $this->repository->flush();
+    }
+
+    public function completeTask($id, $task)
+    {
+        $command = new Domain\WriteModel\TodoList\CompleteTaskCommand($id, $task);
+
+        $this->commandBus->dispatch($command);
+    }
+
+    public function removeTask($id, $task)
+    {
+        $command = new Domain\WriteModel\TodoList\RemoveTaskCommand($id, $task);
+
+        $this->commandBus->dispatch($command);
     }
 }

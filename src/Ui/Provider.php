@@ -33,5 +33,13 @@ class Provider implements ServiceProviderInterface
         $container['App']->post('/list/add-task', function () use ($container) {
             $container['TodoList\Ui\Controller\IndexController']->addTask();
         });
+
+        $container['App']->post('/list/complete-task', function () use ($container) {
+            $container['TodoList\Ui\Controller\IndexController']->completeTask();
+        });
+
+        $container['App']->post('/list/remove-task', function () use ($container) {
+            $container['TodoList\Ui\Controller\IndexController']->removeTask();
+        });
     }
 }

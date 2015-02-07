@@ -11,3 +11,5 @@ TodoList\Domain\ReadModel\TodoList\Task:
   fields:
     description:
       type: text
+    status:
+      type: string

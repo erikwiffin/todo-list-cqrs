@@ -1,4 +1,4 @@
-TodoList\Domain\ReadModel\TodoList\Task:
+TodoList\Domain\ClientModel\TodoList\Task:
   type: entity
   table: todolist_task
 

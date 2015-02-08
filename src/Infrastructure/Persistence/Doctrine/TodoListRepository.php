@@ -5,7 +5,7 @@ namespace TodoList\Infrastructure\Persistence\Doctrine;
 use Broadway\ReadModel;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pimple\Container;
-use TodoList\Domain\ReadModel\TodoList;
+use TodoList\Domain\ClientModel\TodoList;
 
 class TodoListRepository
     implements TodoList\TodoListRepository
@@ -17,7 +17,7 @@ class TodoListRepository
     {
         $this->objectManager = $objectManager;
         $this->objectRepository = $objectManager->getRepository(
-            'TodoList\Domain\ReadModel\TodoList\TodoList'
+            'TodoList\Domain\ClientModel\TodoList\TodoList'
         );
     }
 

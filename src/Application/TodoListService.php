@@ -17,7 +17,7 @@ class TodoListService
     {
         return new self(
             $container['CommandBus'],
-            $container['ReadModel\TodoList\TodoListRepository']
+            $container['ClientModel\TodoList\TodoListRepository']
         );
     }
 

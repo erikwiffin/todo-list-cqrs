@@ -1,6 +1,6 @@
 <?php
 
-namespace TodoList\Domain\ReadModel\TodoList;
+namespace TodoList\Domain\ClientModel\TodoList;
 
 class Task
 {

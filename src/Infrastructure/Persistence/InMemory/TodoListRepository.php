@@ -2,11 +2,11 @@
 
 namespace TodoList\Infrastructure\Persistence\InMemory;
 
-use Broadway\ReadModel;
-use TodoList\Domain\ReadModel\TodoList;
+use Broadway\ClientModel;
+use TodoList\Domain\ClientModel\TodoList;
 
 class TodoListRepository
-    extends ReadModel\InMemory\InMemoryRepository
+    extends ClientModel\InMemory\InMemoryRepository
     implements TodoList\TodoListRepository
 {
 }

@@ -13,7 +13,7 @@ return [
         'isDevMode' => true,
         'proxyDir' => 'data/DoctrineORMModule/Proxy',
         'namespaces' => [
-            'src/Infrastructure/Mapping/' => 'TodoList\Domain\ReadModel',
+            'src/Infrastructure/Mapping/' => 'TodoList\Domain\ClientModel',
         ],
     ],
     'slim' => [

@@ -14,6 +14,10 @@ class Provider implements ServiceProviderInterface
             return Controller\IndexController::fromContainer($c);
         };
 
+        $container['TodoList\Ui\Controller\AdminController'] = function ($c) {
+            return Controller\AdminController::fromContainer($c);
+        };
+
         $container['App'] = function ($container) {
             return new Slim\Slim($container['config']['slim']);
         };
@@ -40,6 +44,10 @@ class Provider implements ServiceProviderInterface
 
         $container['App']->post('/list/remove-task', function () use ($container) {
             $container['TodoList\Ui\Controller\IndexController']->removeTask();
+        });
+
+        $container['App']->get('/admin', function () use ($container) {
+            $container['TodoList\Ui\Controller\AdminController']->index();
         });
     }
 }

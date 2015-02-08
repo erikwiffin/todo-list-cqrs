@@ -1,12 +1,11 @@
 <?php
 
-namespace TodoList\Domain\EventHandler;
+namespace TodoList\Domain\ClientModel;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\ReadModel\Projector;
 use Broadway\ReadModel\RepositoryInterface;
 use Pimple\Container;
-use TodoList\Domain\ReadModel\TodoList;
 
 class TodoListProjector extends Projector
 {
@@ -14,7 +13,7 @@ class TodoListProjector extends Projector
 
     public static function fromContainer(Container $container)
     {
-        return new self($container['ReadModel\TodoList\TodoListRepository']);
+        return new self($container['ClientModel\TodoList\TodoListRepository']);
     }
 
     private function __construct(

@@ -6,7 +6,7 @@ use Broadway\CommandHandling;
 use Broadway\EventDispatcher;
 use Broadway\EventHandling;
 use Broadway\EventStore;
-use Broadway\ReadModel;
+use Broadway\ClientModel;
 use Broadway\Serializer;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver;
@@ -82,7 +82,7 @@ class Provider implements ServiceProviderInterface
             );
         };
 
-        $container['ReadModel\TodoList\TodoListRepository'] = function ($c) {
+        $container['ClientModel\TodoList\TodoListRepository'] = function ($c) {
             return Persistence\Doctrine\TodoListRepository::fromContainer($c);
         };
     }

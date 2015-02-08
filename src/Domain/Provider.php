@@ -10,7 +10,7 @@ class Provider implements ServiceProviderInterface
     public function register(Container $container)
     {
         $container['EventBus']
-            ->subscribe(EventHandler\TodoListProjector::fromContainer($container));
+            ->subscribe(ClientModel\TodoListProjector::fromContainer($container));
 
         $container['CommandBus']
             ->subscribe(WriteModel\TodoListCommandHandler::fromContainer($container));

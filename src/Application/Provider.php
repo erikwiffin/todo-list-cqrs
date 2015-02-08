@@ -12,5 +12,9 @@ class Provider implements ServiceProviderInterface
         $container['TodoList\Application\TodoListService'] = function ($c) {
             return TodoListService::fromContainer($c);
         };
+
+        $container['TodoList\Application\AdminService'] = function ($c) {
+            return AdminService::fromContainer($c);
+        };
     }
 }

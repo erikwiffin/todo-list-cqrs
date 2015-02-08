@@ -1,6 +1,6 @@
 <?php
 
-namespace TodoList\Domain\ReadModel\TodoList;
+namespace TodoList\Domain\ClientModel\TodoList;
 
 use Broadway\ReadModel\ReadModelInterface;
 use Doctrine\Common\Collections\ArrayCollection;

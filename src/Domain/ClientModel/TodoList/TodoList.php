@@ -37,14 +37,22 @@ class TodoList implements ReadModelInterface
 
     public function completeTask($task)
     {
-        $oldTask = $this->tasks->get($task);
-        $this->tasks->remove($task);
-        $this->tasks->set($task, $oldTask->complete());
+        // This is required because of how Doctrine maintains the tasks array
+        $keys = $this->tasks->getKeys();
+        $key = $keys[$task];
+
+        $oldTask = $this->tasks->get($key);
+        $this->tasks->remove($key);
+        $this->tasks->set($key, $oldTask->complete());
     }
 
     public function removeTask($task)
     {
-        $this->tasks->remove($task);
+        // This is required because of how Doctrine maintains the tasks array
+        $keys = $this->tasks->getKeys();
+        $key = $keys[$task];
+
+        $this->tasks->remove($key);
     }
 
     public function tasks()

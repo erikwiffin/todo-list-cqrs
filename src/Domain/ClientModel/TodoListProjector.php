@@ -16,6 +16,11 @@ class TodoListProjector extends Projector
         return new self($container['ClientModel\TodoList\TodoListRepository']);
     }
 
+    public static function withRepository(RepositoryInterface $repository)
+    {
+        return new self($repository);
+    }
+
     private function __construct(
         RepositoryInterface $repository
     ) {

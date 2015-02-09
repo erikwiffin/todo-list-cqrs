@@ -49,5 +49,13 @@ class Provider implements ServiceProviderInterface
         $container['App']->get('/admin', function () use ($container) {
             $container['TodoList\Ui\Controller\AdminController']->index();
         });
+
+        $container['App']->get('/admin/history/:id', function ($id) use ($container) {
+            $container['TodoList\Ui\Controller\AdminController']->history($id);
+        });
+
+        $container['App']->get('/admin/history/:id/:playhead', function ($id, $playhead) use ($container) {
+            $container['TodoList\Ui\Controller\AdminController']->snapshot($id, $playhead);
+        });
     }
 }

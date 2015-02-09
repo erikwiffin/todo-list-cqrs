@@ -2,11 +2,15 @@
 
 namespace TodoList\Infrastructure\Persistence\InMemory;
 
-use Broadway\ClientModel;
+use Broadway\ReadModel;
 use TodoList\Domain\ClientModel\TodoList;
 
 class TodoListRepository
-    extends ClientModel\InMemory\InMemoryRepository
+    extends ReadModel\InMemory\InMemoryRepository
     implements TodoList\TodoListRepository
 {
+    public function flush()
+    {
+        // no-op
+    }
 }

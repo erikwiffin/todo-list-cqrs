@@ -3,10 +3,29 @@
 {% block content %}
 <div class="row">
     <div class="col-sm-9">
-        <h1>The world so far...</h1>
-    </div>
-    <div class="col-sm-3">
-        <h2>Sidebar</h2>
+        <h1>Admin</h1>
+        {% for list in lists %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    {{ list.title }}
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="pull-right">
+                    <a href="/admin/history/{{ list.getId }}">History</a>
+                </div>
+                <ul class="list-unstyled">
+                    {% for task in list.tasks %}
+                    <li>
+                        <input type="checkbox" disabled {% if task.isCompleted %}checked{% endif %}>
+                        {{ task.description }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

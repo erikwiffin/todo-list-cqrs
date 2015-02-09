@@ -2,40 +2,71 @@
 
 namespace TodoList\Application;
 
-use Broadway\CommandHandling\CommandBusInterface;
 use Broadway\ClientModel\RepositoryInterface;
+use Broadway\CommandHandling\CommandBusInterface;
+use Broadway\Domain\DomainEventStream;
+use Broadway\EventHandling\SimpleEventBus;
+use Broadway\EventStore\EventStoreInterface;
 use Pimple\Container;
 use Rhumsaa\Uuid\Uuid;
-use TodoList\Domain;
+use TodoList\Domain\ClientModel;
+use TodoList\Infrastructure\Persistence\InMemory;
 
 class AdminService
 {
     private $commandBus;
-    private $container;
+    private $eventStore;
+    private $repository;
 
     public static function fromContainer(Container $container)
     {
         return new self(
             $container['CommandBus'],
-            $container
+            $container['ClientModel\TodoList\TodoListRepository'],
+            $container['EventStore']
         );
     }
 
     private function __construct(
         CommandBusInterface $commandBus,
-        $container
+        ClientModel\TodoList\TodoListRepository $repository,
+        EventStoreInterface $eventStore
     ) {
         $this->commandBus = $commandBus;
-        $this->container = $container;
+        $this->repository = $repository;
+        $this->eventStore = $eventStore;
     }
 
-    public function displayDomainEventLog()
+    public function displayTodoLists()
     {
-        $eventStore = $this->container['EventStore'];
-        $events = $eventStore->load('aaede3e1-f40a-4278-9098-5e5dd4f4aef3');
+        return $this->repository->findAll();
+    }
 
+    public function displayDomainEventLog($id)
+    {
+        return $this->eventStore->load($id);
+    }
+
+    public function displayTodoListAtPlayhead($id, $playhead)
+    {
+        $repository = new InMemory\TodoListRepository();
+        $projector = ClientModel\TodoListProjector::withRepository($repository);
+
+        $eventBus = new SimpleEventBus();
+        $eventBus->subscribe($projector);
+
+        $events = $this->eventStore->load($id);
+
+        $slice = [];
         foreach ($events as $event) {
-            var_dump($event);
+            if ($event->getPlayhead() <= $playhead) {
+                $slice[] = $event;
+            }
         }
+
+        $snapshot = new DomainEventStream($slice);
+        $eventBus->publish($snapshot);
+
+        return $repository->find($id);
     }
 }

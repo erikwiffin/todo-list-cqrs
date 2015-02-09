@@ -50,7 +50,7 @@ class TodoListRepository
 
     public function findAll()
     {
-        throw new \Exception('findAll');
+        return $this->objectRepository->findBy([]);
     }
 
     public function remove($id)

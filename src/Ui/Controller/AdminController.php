@@ -17,6 +17,10 @@ class AdminController
     ) {
         $this->app = $app;
         $this->service = $service;
+
+        $this->app->view->parserExtensions = [
+            new \Twig_Extension_Debug()
+        ];
     }
 
     public static function fromContainer(Container $container)
@@ -29,7 +33,25 @@ class AdminController
 
     public function index()
     {
-        $this->service->displayDomainEventLog();
+        $lists = $this->service->displayTodoLists();
+
+        $this->app->view->setData('lists', $lists);
         $this->app->render('admin/index.twig');
+    }
+
+    public function history($id)
+    {
+        $events = $this->service->displayDomainEventLog($id);
+
+        $this->app->view->setData('events', $events);
+        $this->app->render('admin/history.twig');
+    }
+
+    public function snapshot($id, $playhead)
+    {
+        $list = $this->service->displayTodoListAtPlayhead($id, $playhead);
+
+        $this->app->view->setData('list', $list);
+        $this->app->render('view.twig');
     }
 }

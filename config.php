@@ -2,11 +2,9 @@
 
 return [
     'db' => [
-        'dbname' => 'todolist',
-        'user' => 'todolist',
-        'password' => 'QT3w96abj7FCpfZa',
-        'host' => 'localhost',
-        'driver' => 'pdo_mysql',
+        'path' => 'database/todolist.db',
+        'driver' => 'pdo_sqlite',
+        'charset' => 'utf8',
     ],
     'doctrine' => [
         'paths' => 'src/Infrastructure/Mapping',

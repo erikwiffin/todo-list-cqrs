@@ -85,5 +85,9 @@ class Provider implements ServiceProviderInterface
         $container['ClientModel\TodoList\TodoListRepository'] = function ($c) {
             return Persistence\Doctrine\TodoListRepository::fromContainer($c);
         };
+
+        $container['MarkovModel\TransitionRepository'] = function ($c) {
+            return Persistence\Doctrine\TransitionRepository::fromContainer($c);
+        };
     }
 }

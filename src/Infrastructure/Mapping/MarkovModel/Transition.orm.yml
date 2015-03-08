@@ -1,0 +1,26 @@
+TodoList\Domain\MarkovModel\Transition:
+  type: entity
+  table: transition
+
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+
+  oneToOne:
+    prevState:
+      targetEntity: State
+      orphanRemoval: true
+      cascade: ["persist", "remove"]
+      joinColumn:
+        name: prev_state_id
+        referencedColumnName: id
+
+    nextState:
+      targetEntity: State
+      orphanRemoval: true
+      cascade: ["persist", "remove"]
+      joinColumn:
+        name: next_state_id
+        referencedColumnName: id

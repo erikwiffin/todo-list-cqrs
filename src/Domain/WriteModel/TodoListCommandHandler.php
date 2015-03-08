@@ -24,7 +24,7 @@ class TodoListCommandHandler extends CommandHandling\CommandHandler
     {
         $todoList = TodoList\TodoList::start($command->todoListId, $command->title);
 
-        $this->repository->add($todoList);
+        $this->repository->save($todoList);
     }
 
     protected function handleAddTaskCommand(TodoList\AddTaskCommand $command)
@@ -32,7 +32,7 @@ class TodoListCommandHandler extends CommandHandling\CommandHandler
         $todoList = $this->repository->load($command->todoListId);
         $todoList->addTask($command->task);
 
-        $this->repository->add($todoList);
+        $this->repository->save($todoList);
     }
 
     protected function handleCompleteTaskCommand(TodoList\CompleteTaskCommand $command)
@@ -40,7 +40,7 @@ class TodoListCommandHandler extends CommandHandling\CommandHandler
         $todoList = $this->repository->load($command->todoListId);
         $todoList->completeTask($command->task);
 
-        $this->repository->add($todoList);
+        $this->repository->save($todoList);
     }
 
     protected function handleRemoveTaskCommand(TodoList\RemoveTaskCommand $command)
@@ -48,6 +48,6 @@ class TodoListCommandHandler extends CommandHandling\CommandHandler
         $todoList = $this->repository->load($command->todoListId);
         $todoList->removeTask($command->task);
 
-        $this->repository->add($todoList);
+        $this->repository->save($todoList);
     }
 }

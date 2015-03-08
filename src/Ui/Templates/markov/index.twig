@@ -1,0 +1,66 @@
+{% extends "markov/layout.twig" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-9">
+        <h1>Markov</h1>
+        <div id="canvas"></div>
+    </div>
+</div>
+
+<script type="text/vnd.graphviz" id="data">
+digraph markov_chain{
+    {%- for start,set in sets -%}
+    {%- for end,count in set %}
+
+    {{ start }} -> {{ end }} [ label = "{{ count }}" ];
+    {%- endfor -%}
+    {% endfor %}
+
+}
+</script>
+{% endblock %}
+
+{% block footerscript %}
+<script src="http://d3js.org/d3.v3.js"></script>
+<script src="http://cpettitt.github.io/project/graphlib-dot/v0.5.2/graphlib-dot.js"></script>
+<script src="http://cpettitt.github.io/project/dagre-d3/latest/dagre-d3.js"></script>
+<script>
+$(function () {
+    var data = $('#data').html();
+    var canvas = $('#canvas').html('<svg><g /></svg>');
+
+    var svg = d3.select('svg');
+    var inner = d3.select("svg g");
+    var zoom = d3.behavior.zoom().on("zoom", function () {
+        inner.attr("transform", "translate(" + d3.event.translate + ")" +
+                                     "scale(" + d3.event.scale + ")");
+    });
+
+    var render = dagreD3.render();
+
+    svg.call(zoom);
+
+    try {
+        g = graphlibDot.read(data);
+    } catch (e) {
+        console.log(e);
+        throw e;
+    }
+
+    // Set margins, if not present
+    if (!g.graph().hasOwnProperty("marginx") &&
+        !g.graph().hasOwnProperty("marginy")) {
+      g.graph().marginx = 20;
+      g.graph().marginy = 20;
+    }
+
+    g.graph().transition = function(selection) {
+        return selection.transition().duration(500);
+    };
+
+    d3.select("svg g").call(render, g);
+    $('svg').height(g.graph().height + 40);
+});
+</script>
+{% endblock %}

@@ -12,6 +12,9 @@ class Provider implements ServiceProviderInterface
         $container['EventBus']
             ->subscribe(ClientModel\TodoListProjector::fromContainer($container));
 
+        $container['EventBus']
+            ->subscribe(MarkovModel\TransitionProjector::fromContainer($container));
+
         $container['CommandBus']
             ->subscribe(WriteModel\TodoListCommandHandler::fromContainer($container));
     }

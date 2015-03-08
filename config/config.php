@@ -11,7 +11,8 @@ return [
         'isDevMode' => true,
         'proxyDir' => 'data/DoctrineORMModule/Proxy',
         'namespaces' => [
-            'src/Infrastructure/Mapping/' => 'TodoList\Domain\ClientModel',
+            'src/Infrastructure/Mapping/ClientModel/' => 'TodoList\Domain\ClientModel',
+            'src/Infrastructure/Mapping/MarkovModel/' => 'TodoList\Domain\MarkovModel',
         ],
     ],
     'slim' => [

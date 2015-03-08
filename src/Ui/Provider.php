@@ -10,12 +10,16 @@ class Provider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
+        $container['TodoList\Ui\Controller\AdminController'] = function ($c) {
+            return Controller\AdminController::fromContainer($c);
+        };
+
         $container['TodoList\Ui\Controller\IndexController'] = function ($c) {
             return Controller\IndexController::fromContainer($c);
         };
 
-        $container['TodoList\Ui\Controller\AdminController'] = function ($c) {
-            return Controller\AdminController::fromContainer($c);
+        $container['TodoList\Ui\Controller\MarkovController'] = function ($c) {
+            return Controller\MarkovController::fromContainer($c);
         };
 
         $container['App'] = function ($container) {
@@ -56,6 +60,10 @@ class Provider implements ServiceProviderInterface
 
         $container['App']->get('/admin/history/:id/:playhead', function ($id, $playhead) use ($container) {
             $container['TodoList\Ui\Controller\AdminController']->snapshot($id, $playhead);
+        });
+
+        $container['App']->get('/markov', function () use ($container) {
+            $container['TodoList\Ui\Controller\MarkovController']->index();
         });
     }
 }
